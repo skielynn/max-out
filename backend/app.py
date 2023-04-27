@@ -1,7 +1,10 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash
 import psycopg2
+
+
 db = SQLAlchemy()
 
 app = Flask(__name__)
@@ -38,10 +41,26 @@ class Exercise(db.Model):
 with app.app_context():
     db.create_all()
 
-@app.route("/testings")
+#@app.route("/testings")
 
-def testing():
-    return {"testings":["1","2","3"]}
+#def testing():
+    #return {"testings":["1","2","3"]}
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    existing_email = User.query.filter_by(email=email).first
+    if existing_email:
+        return jsonify({'message': 'Username already taken'}), 409
+   
+    new_user = User(user_name=user_name, email=email, password=password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+
 
 if __name__ == "__main__":
  app.run(debug=True)
