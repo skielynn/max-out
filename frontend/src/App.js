@@ -7,7 +7,7 @@ import {
 
 // components
 import Login from './Components/Login'
-import Main from './Components/Main'
+//import Main from './Components/Main'
 import BackBiceps from './Components/Tracker/BackBiceps'
 import ChestTriceps from './Components/Tracker/ChestTriceps'
 import Legs from './Components/Tracker/Legs'
@@ -21,7 +21,6 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Login />} />
-      <Route path="main" element={<Main />} />
       <Route path="tracker" element={<TrackerLayout />}>
         <Route path="backBiceps" element={<BackBiceps />} />
         <Route path="chestTriceps" element={<ChestTriceps />} />

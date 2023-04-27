@@ -7,7 +7,6 @@ export default function RootLayout() {
         <nav>
           <h1>MAX-OUT</h1>
           <NavLink to="/">Login</NavLink>
-          <NavLink to="main">Main</NavLink>
           <NavLink to="tracker">Tracker</NavLink>
         </nav>
       </header>
