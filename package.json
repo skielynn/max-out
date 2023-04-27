@@ -9,7 +9,6 @@
   "description": "MAX-OUT is a web application designed to help gym-goers of all levels keep track of their strength training progress. Whether you're just starting out or you're an experienced weightlifter, MAX-OUT provides you with a powerful tool for tracking your progress and staying motivated along the way.",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
