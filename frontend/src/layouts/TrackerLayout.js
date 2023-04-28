@@ -1,4 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom"
+import backbi from './images/backbi.png';
+import chesttri from './images/chesttri.png';
+import legs from './images/legs.png';
+import shoulders from './images/shoulders.png';
 
 export default function TrackerLayout() {
   return (
@@ -8,10 +12,18 @@ export default function TrackerLayout() {
       <p>What muscle split are you MAXING-OUT today?</p>
 
       <nav>
-        <NavLink to="backBiceps">Back and Biceps</NavLink>
-        <NavLink to="chestTriceps">Chest and Triceps</NavLink>
-        <NavLink to="legs">Legs</NavLink>
-        <NavLink to="shoulders">Shoulders</NavLink>
+        <NavLink to="backBiceps">
+          <img src={backbi} alt="Back and Biceps" />
+        </NavLink>
+        <NavLink to="chestTriceps">
+        <img src={chesttri} alt="Chest and Triceps" />
+        </NavLink>
+        <NavLink to="legs">
+        <img src={legs} alt="Legs" />
+        </NavLink>
+        <NavLink to="shoulders">
+        <img src={shoulders} alt="Shoulders" />
+        </NavLink>
       </nav>
 
       <Outlet />

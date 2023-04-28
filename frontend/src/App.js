@@ -1,7 +1,7 @@
 import {
-  createBrowserRouter, 
+  createBrowserRouter,
   createRoutesFromElements,
-  Route, 
+  Route,
   RouterProvider
 } from 'react-router-dom'
 
@@ -16,6 +16,8 @@ import Shoulders from './Components/Tracker/Shoulders'
 // layouts
 import RootLayout from './layouts/RootLayout'
 import TrackerLayout from './layouts/TrackerLayout'
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(

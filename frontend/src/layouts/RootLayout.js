@@ -1,13 +1,17 @@
 import { Outlet, NavLink } from "react-router-dom";
+import logo from './logo.png';
+
 
 export default function RootLayout() {
   return (
     <div className="root-layout">
       <header>
         <nav>
-          <h1>MAX-OUT</h1>
-          <NavLink to="/">Login</NavLink>
-          <NavLink to="tracker">Tracker</NavLink>
+          <h1>
+          <img src={logo} alt="Logo" />
+          </h1>
+          <NavLink to="/">LOG-IN</NavLink>
+          <NavLink to="tracker">TRACKER</NavLink>
         </nav>
       </header>
       <main>
