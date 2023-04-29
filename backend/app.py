@@ -92,8 +92,17 @@ def login():
         return jsonify({'message': 'Invalid email or password'}), 401
 
     token = create_access_token(identity=user.id)
+    return jsonify({'message': 'Login successful', 'token': token}), 200
 
-    #return jsonify({'token': token})
+##### IF LOGIN WORKS ROUTE TO DASH ?? ####
+@app.route('/dash')
+@jwt_required()
+def dash():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    return jsonify({'message': f"Welcome {user.user_name} to your dashboard!"}), 200
+
  
                                     ######### NEW ENTRY ROUTE FOR TABLES ##############
 @app.route('/newworkout/<int:user_id>', methods=['POST'])
