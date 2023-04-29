@@ -94,14 +94,6 @@ def login():
     token = create_access_token(identity=user.id)
     return jsonify({'message': 'Login successful', 'token': token}), 200
 
-##### IF LOGIN WORKS ROUTE TO DASH ?? ####
-@app.route('/dash')
-@jwt_required()
-def dash():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-
-    return jsonify({'message': f"Welcome {user.user_name} to your dashboard!"}), 200
 
  
                                     ######### NEW ENTRY ROUTE FOR TABLES ##############
