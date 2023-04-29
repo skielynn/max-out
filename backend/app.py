@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 db = SQLAlchemy()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Alfiebby333!@db.hrxmyadcablyhlrfrlmz.supabase.co:5432/postgres'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Alfiebby333!@db.nykvfakonlmschpmlrpv.supabase.co:5432/postgres'
 
                                         
 db.init_app(app)
@@ -22,45 +22,23 @@ class User(db.Model):
     email = db.Column(db.String(200), nullable = False, unique = True)
     password = db.Column(db.String(200), nullable = False)
     workouts = db.relationship('Workout', backref = 'user', lazy = True)
-    #exercises = db.relationship('Exercise', backref = 'user', lazy = True)
+
 class Workout(db.Model):
     __tablename__ = "workouts"
     id = db.Column(db.Integer, primary_key = True)
-    ex_date = db.Column(db.Date)
+    exercise_date = db.Column(db.Date)
+    exercise_name = db.Column(db.String(200), nullable = False)
     reps = db.Column(db.Integer)
     weight = db.Column(db.Integer)
+    muscle_group = db.Column(db.String)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    exercises = db.relationship('Exercise',backref = 'workout',lazy = True)
-    #exercises = db.relationship('Exercise', backref = 'workout', lazy = True)
-   
-
-class Exercise(db.Model):
-    __tablename__ = "exercises"
-    id = db.Column(db.Integer, primary_key = True)
-    workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable=False)
-    exercise_name = db.Column(db.String(100), nullable=False)
-    reps = db.Column(db.Integer)
-    weight = db.Column(db.Integer)
-    muscle_group_id = db.Column(db.Integer, db.ForeignKey('muscle_groups.muscle_group_id'), nullable=False)
-    
-class MuscleGroup(db.Model):
-    __tablename__ = 'muscle_groups'
-    muscle_group_id = db.Column(db.Integer, primary_key=True)
-    muscle_group_name = db.Column(db.String(50), nullable=False)
-    exercises = db.relationship('Exercise', backref='muscle_group', lazy=True)
-    
-    
-    #workout_id = db.Column(db.Integer, db.ForeignKey('workouts.id'), nullable = False)
-    #workout_exercises= db.relationship('Workout', backref = 'workout_exercises')
+  
 
 with app.app_context():
     db.create_all()
 
-'''@app.route("/testings")
 
-def testing():
-    return {"testings":["1","2","3"]}'''
-
+                         #########   SIGN UP   ROUTE  ############
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -83,18 +61,75 @@ def signup():
         return jsonify({'message': 'Username or email already exists'}), 409
     
     return jsonify({'message':"user created succesfully!!"}),201
-    #new_user = User(user_name=user_name, password=password, email=email)
 
-    '''try:
-        db.session.add(new_user)
+
+                                      ############### LOG IN ROUTE ###################
+
+ 
+                                    ######### NEW ENTRY ROUTE FOR TABLES ##############
+@app.route('/newworkout', methods=['POST'])
+def newworkout():
+    data = request.get_json()
+    exercise_date= data['exercise_date']
+    exercise_name = data['exercise_name']
+    reps = data['reps']
+    weight = data['weight']
+    muscle_group = data['muscle_group']
+    #user_id = data ["user_id"]
+    
+    new_workout = Workout(exercise_date= exercise_date, exercise_name= exercise_name, reps=reps, weight = weight, muscle_group = muscle_group)
+
+    try:
+        db.session.add(new_workout)
         db.session.commit()
     except IntegrityError as e:
         db.session.rollback()
-        return jsonify({'message': 'Username or email already exists'}), 409'''
+        return jsonify({'message': 'Username or email already exists'}), 409
     
+    return jsonify({'message':"user created succesfully!!"}),201
+    
+
+
+                                ##################    #GET ROUTE   ###################
+@app.route('/userdata/<user_id>', methods=['GET'])
+def user_data(user_id):
+    user_id = Workout.query.filter_by(user_id= user_id).first()
+    if user_id is not None:
+        data = {'exercise_date': user_id.exercise_date,
+                'exercise_name': user_id.exercise_name,
+                'reps': user_id.reps,
+                'weight': user_id.weight,
+                'muscle_group':user_id.muscle_group}
+        return jsonify(data)
+    else:
+        return jsonify({'error': 'User data not found'}), 404
+
+
+                        ###################    DELETE ROUTES FOR ENTRIES    ############
+
+@app.route('/deletedata/delete', methods = ['DELETE'])
+def delete_data():
+    data = request.get_json()
+    exercise_name = data.get('exercise_name')
+    exercise_date = data.get('exercise_date')
+
+    
+    if not exercise_name or not exercise_date:
+        return jsonify({'error': 'Exercise name and date are required'}), 400
+    
+    workout = Workout.query.filter_by(exercise_name=exercise_name, exercise_date=exercise_date).first()
+    
+    if workout:
+        db.session.delete(workout)
+        db.session.commit()
+        return jsonify({'message': 'Workout deleted successfully'})
+    
+    return jsonify({'error': 'Workout not found'}), 404
+   
+                         ######### UPDATE ROUTE ###########
+
 
 
 if __name__ == "__main__":
  app.run(debug=True)
-
 
