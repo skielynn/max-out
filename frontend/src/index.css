@@ -197,3 +197,42 @@ main {
   border-radius: 4%;
   border: 2px solid black
 }
+
+.exerciseBox {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.exerciseName {
+  flex: 1;
+}
+
+.exerciseDetails {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  margin-left: 20px;
+}
+
+.exerciseDetail {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.exerciseDetail label {
+  margin-right: 10px;
+}
+
+.exerciseDetail input {
+  margin-right: 10px;
+}
+
+.exerciseDetail button {
+  margin-top: 10px;
+}
