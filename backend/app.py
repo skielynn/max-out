@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, JWT, JWt_required, current_identity 
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
-#from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
@@ -42,6 +42,7 @@ with app.app_context():
 
 
                          #########   SIGN UP   ROUTE  ############
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -54,8 +55,12 @@ def signup():
     if not user_name or not password or not email:
         return jsonify({'message': 'All fields are required'}), 400
     
+    ##generates hashed password###
+    hashed_password = generate_password_hash(password)
+    
     new_user = User(user_name=user_name, password=password, email=email)
 
+    ### creating access token ###
     token = create_access_token(identity = new_user.id)
     #return jsonify({'token': token})
 
@@ -70,7 +75,20 @@ def signup():
 
 
                                       ############### LOG IN ROUTE ###################
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not check_password_hash(user.password, password): 
+        return jsonify({'message': 'Invalid email or password'}), 401
+
+    token = create_access_token(identity=user.id)
+
+    #return jsonify({'token': token})
  
                                     ######### NEW ENTRY ROUTE FOR TABLES ##############
 @app.route('/newworkout', methods=['POST'])
@@ -94,7 +112,6 @@ def newworkout():
     
     return jsonify({'message':"user created succesfully!!"}),201
     
-
 
                                 ##################    #GET ROUTE   ###################
 @app.route('/userdata/<user_id>', methods=['GET'])
@@ -131,12 +148,31 @@ def delete_data():
         return jsonify({'message': 'Workout deleted successfully'})
     
     return jsonify({'error': 'Workout not found'}), 404
+
    
-                         ######### UPDATE ROUTE ###########
+                                   ######### UPDATE ROUTE ###########
+@app.route('/update/<init:workout_id>', methods=(['PUT']))
+def update(workout_id):
+    data = request.get_json()
+    workout = Workout.query.get(workout_id)
+    if not workout:
+        return jsonify({'error': 'workout not found'}), 404
+    if 'exercise_data' in data:
+        workout.exercise_date = data ['exercise_date']
+    if 'exercise_name' in data:
+        workout.exercise_name = data ['exercise_name']
+    if 'reps' in data:
+        workout.reps = data ['reps']
+    if 'weight' in data:
+        workout.weight = data ['weight']
+    if 'muscle_group' in data:
+        workout.muscle_group = data ['muscle_group']
 
+        db.session.commit()
 
+        return jsonify({'message': 'workout updated successfully'}), 200
+    
                         ######### PROTECTING ENDPOINT ROUTE #######
-                        
 @app.route('/protected', methods =['GET'])
 @jwt_required()
 def protected():
