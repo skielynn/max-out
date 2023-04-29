@@ -1,24 +1,23 @@
-from flask import Flask, request, jsonify, JWT, JWt_required, current_identity 
+from flask import Flask, request, jsonify
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
-<<<<<<< HEAD
 from flask_cors import CORS
-=======
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, JWTManager
 
 
 
->>>>>>> d94456e796761e8ad237838ab3e185183c767da0
 
 db = SQLAlchemy()
 
 app = Flask(__name__)
 CORS(app)
+app.config['JWT_SECRET_KEY'] = '1157510'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Alfiebby333!@db.nykvfakonlmschpmlrpv.supabase.co:5432/postgres'
+jwt = JWTManager(app)
 
                                         
 db.init_app(app)
@@ -57,14 +56,14 @@ def signup():
     user_name = data['user_name']
     existing_email = User.query.filter_by(email=email).first()
     if existing_email:
-        return jsonify({'message': 'Username already taken'}), 409
+        return jsonify({'message': 'email already taken'}), 409
     if not user_name or not password or not email:
         return jsonify({'message': 'All fields are required'}), 400
     
     ##generates hashed password###
     hashed_password = generate_password_hash(password)
     
-    new_user = User(user_name=user_name, password=password, email=email)
+    new_user = User(user_name=user_name, password=hashed_password, email=email)
 
     ### creating access token ###
     token = create_access_token(identity = new_user.id)
@@ -77,7 +76,7 @@ def signup():
         db.session.rollback()
         return jsonify({'message': 'Username or email already exists'}), 409
     
-    return jsonify({'message':"user created succesfully!!"}),201
+    return jsonify({'token': token,'message':"user created succesfully!!"}),201
 
 
                                       ############### LOG IN ROUTE ###################
@@ -96,11 +95,7 @@ def login():
 
     #return jsonify({'token': token})
  
-<<<<<<< HEAD
-                                ######### NEW ENTRY ROUTE FOR TABLES ##############
-=======
                                     ######### NEW ENTRY ROUTE FOR TABLES ##############
->>>>>>> d94456e796761e8ad237838ab3e185183c767da0
 @app.route('/newworkout/<int:user_id>', methods=['POST'])
 def newworkout(user_id):
     data = request.get_json()
@@ -165,7 +160,7 @@ def delete_data():
 
    
                                    ######### UPDATE ROUTE ###########
-@app.route('/update/<init:workout_id>', methods=(['PUT']))
+@app.route('/update/<int:workout_id>', methods=(['PUT']))
 def update(workout_id):
     data = request.get_json()
     workout = Workout.query.get(workout_id)
