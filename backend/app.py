@@ -1,11 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, JWT, JWt_required, current_identity 
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
-#from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
+<<<<<<< HEAD
 from flask_cors import CORS
+=======
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+
+
+>>>>>>> d94456e796761e8ad237838ab3e185183c767da0
 
 db = SQLAlchemy()
 
@@ -41,6 +48,7 @@ with app.app_context():
 
 
                          #########   SIGN UP   ROUTE  ############
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -53,7 +61,14 @@ def signup():
     if not user_name or not password or not email:
         return jsonify({'message': 'All fields are required'}), 400
     
+    ##generates hashed password###
+    hashed_password = generate_password_hash(password)
+    
     new_user = User(user_name=user_name, password=password, email=email)
+
+    ### creating access token ###
+    token = create_access_token(identity = new_user.id)
+    #return jsonify({'token': token})
 
     try:
         db.session.add(new_user)
@@ -66,9 +81,26 @@ def signup():
 
 
                                       ############### LOG IN ROUTE ###################
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not check_password_hash(user.password, password): 
+        return jsonify({'message': 'Invalid email or password'}), 401
+
+    token = create_access_token(identity=user.id)
+
+    #return jsonify({'token': token})
  
+<<<<<<< HEAD
                                 ######### NEW ENTRY ROUTE FOR TABLES ##############
+=======
+                                    ######### NEW ENTRY ROUTE FOR TABLES ##############
+>>>>>>> d94456e796761e8ad237838ab3e185183c767da0
 @app.route('/newworkout/<int:user_id>', methods=['POST'])
 def newworkout(user_id):
     data = request.get_json()
@@ -94,7 +126,6 @@ def newworkout(user_id):
     
     return jsonify({'message':"user created succesfully!!"}),201
     
-
 
                                 ##################    #GET ROUTE   ###################
 @app.route('/userdata/<user_id>', methods=['GET'])
@@ -131,10 +162,42 @@ def delete_data():
         return jsonify({'message': 'Workout deleted successfully'})
     
     return jsonify({'error': 'Workout not found'}), 404
+
    
-                         ######### UPDATE ROUTE ###########
+                                   ######### UPDATE ROUTE ###########
+@app.route('/update/<init:workout_id>', methods=(['PUT']))
+def update(workout_id):
+    data = request.get_json()
+    workout = Workout.query.get(workout_id)
+    if not workout:
+        return jsonify({'error': 'workout not found'}), 404
+    if 'exercise_data' in data:
+        workout.exercise_date = data ['exercise_date']
+    if 'exercise_name' in data:
+        workout.exercise_name = data ['exercise_name']
+    if 'reps' in data:
+        workout.reps = data ['reps']
+    if 'weight' in data:
+        workout.weight = data ['weight']
+    if 'muscle_group' in data:
+        workout.muscle_group = data ['muscle_group']
 
+        db.session.commit()
 
+        return jsonify({'message': 'workout updated successfully'}), 200
+    
+                        ######### PROTECTING ENDPOINT ROUTE #######
+@app.route('/protected', methods =['GET'])
+@jwt_required()
+def protected():
+    current_user_id = get_jwt_identity() 
+    user = User.query.filter_by(id=current_user_id).first()
+    return jsonify({
+        'id': user.id,
+        'user_name': user.user_name,
+        'email': user.email,
+        'workouts': [w.id for w in user.workouts]
+    })
 
 if __name__ == "__main__":
  app.run(debug=True)
