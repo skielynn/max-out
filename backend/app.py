@@ -5,15 +5,17 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
-
+from flask_cors import CORS
 
 db = SQLAlchemy()
 
 app = Flask(__name__)
+CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Alfiebby333!@db.nykvfakonlmschpmlrpv.supabase.co:5432/postgres'
 
                                         
 db.init_app(app)
+
 
 class User(db.Model):
     __tablename__= 'users'
@@ -66,9 +68,9 @@ def signup():
                                       ############### LOG IN ROUTE ###################
 
  
-                                    ######### NEW ENTRY ROUTE FOR TABLES ##############
-@app.route('/newworkout', methods=['POST'])
-def newworkout():
+                                ######### NEW ENTRY ROUTE FOR TABLES ##############
+@app.route('/newworkout/<int:user_id>', methods=['POST'])
+def newworkout(user_id):
     data = request.get_json()
     exercise_date= data['exercise_date']
     exercise_name = data['exercise_name']
@@ -77,7 +79,11 @@ def newworkout():
     muscle_group = data['muscle_group']
     #user_id = data ["user_id"]
     
-    new_workout = Workout(exercise_date= exercise_date, exercise_name= exercise_name, reps=reps, weight = weight, muscle_group = muscle_group)
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"message": "USER DOES NOT EXIST"})
+    new_workout = Workout(exercise_date= exercise_date, exercise_name= exercise_name, reps=reps, weight = weight, muscle_group = muscle_group, user_id=user.id )
 
     try:
         db.session.add(new_workout)
