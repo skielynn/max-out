@@ -1,10 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, JWT, JWt_required, current_identity 
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
 #from werkzeug.security import generate_password_hash
 import psycopg2
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+
 
 
 db = SQLAlchemy()
@@ -52,6 +55,9 @@ def signup():
         return jsonify({'message': 'All fields are required'}), 400
     
     new_user = User(user_name=user_name, password=password, email=email)
+
+    token = create_access_token(identity = new_user.id)
+    #return jsonify({'token': token})
 
     try:
         db.session.add(new_user)
@@ -129,6 +135,19 @@ def delete_data():
                          ######### UPDATE ROUTE ###########
 
 
+                        ######### PROTECTING ENDPOINT ROUTE #######
+                        
+@app.route('/protected', methods =['GET'])
+@jwt_required()
+def protected():
+    current_user_id = get_jwt_identity() 
+    user = User.query.filter_by(id=current_user_id).first()
+    return jsonify({
+        'id': user.id,
+        'user_name': user.user_name,
+        'email': user.email,
+        'workouts': [w.id for w in user.workouts]
+    })
 
 if __name__ == "__main__":
  app.run(debug=True)
