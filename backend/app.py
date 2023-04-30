@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
+#from flask_session  import session 
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -8,20 +9,21 @@ from sqlalchemy import create_engine
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, JWTManager
 
+#Alfiebby333!
 
-
+#Alfiebby333!
 
 db = SQLAlchemy()
 
 app = Flask(__name__)
 CORS(app)
 app.config['JWT_SECRET_KEY'] = '1157510'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:Alfiebby333!@db.nykvfakonlmschpmlrpv.supabase.co:5432/postgres'
+app.config["SQLALCHEMY_DATABASE_URI"] =  'postgresql://postgres:Alfiebby333!@db.hbycsclzhreqgvgeerwi.supabase.co:5432/postgres'
 jwt = JWTManager(app)
 
-                                        
-db.init_app(app)
 
+                                  
+db.init_app(app)
 
 class User(db.Model):
     __tablename__= 'users'
@@ -38,8 +40,10 @@ class Workout(db.Model):
     exercise_name = db.Column(db.String(200), nullable = False)
     reps = db.Column(db.Integer)
     weight = db.Column(db.Integer)
-    muscle_group = db.Column(db.String)
+    sets = db.Column(db.String)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+   
+
   
 
 with app.app_context():
@@ -91,27 +95,28 @@ def login():
     if not user or not check_password_hash(user.password, password): 
         return jsonify({'message': 'Invalid email or password'}), 401
 
+   
     token = create_access_token(identity=user.id)
+    
     return jsonify({'message': 'Login successful', 'token': token}), 200
-
-
- 
-                                    ######### NEW ENTRY ROUTE FOR TABLES ##############
-@app.route('/newworkout/<int:user_id>', methods=['POST'])
-def newworkout(user_id):
+                
+                  ############# NEW WORKOUUT ##################
+@app.route('/newworkout', methods=['POST'])
+@jwt_required()
+def newworkout():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
     data = request.get_json()
     exercise_date= data['exercise_date']
     exercise_name = data['exercise_name']
     reps = data['reps']
     weight = data['weight']
-    muscle_group = data['muscle_group']
-    #user_id = data ["user_id"]
-    
-    user = User.query.get(user_id)
-
+    sets = data['sets']
+ 
     if not user:
         return jsonify({"message": "USER DOES NOT EXIST"})
-    new_workout = Workout(exercise_date= exercise_date, exercise_name= exercise_name, reps=reps, weight = weight, muscle_group = muscle_group, user_id=user.id )
+    
+    new_workout = Workout(exercise_date= exercise_date, exercise_name= exercise_name, reps=reps, weight = weight, sets = sets, user_id= user.id)
 
     try:
         db.session.add(new_workout)
@@ -120,7 +125,11 @@ def newworkout(user_id):
         db.session.rollback()
         return jsonify({'message': 'Username or email already exists'}), 409
     
-    return jsonify({'message':"user created succesfully!!"}),201
+    return jsonify({'message':"workout created succesfully!!"}), 201
+
+
+ 
+                     
     
 
                                 ##################    #GET ROUTE   ###################
@@ -167,7 +176,7 @@ def update(workout_id):
     workout = Workout.query.get(workout_id)
     if not workout:
         return jsonify({'error': 'workout not found'}), 404
-    if 'exercise_data' in data:
+    if 'exercise_date' in data:
         workout.exercise_date = data ['exercise_date']
     if 'exercise_name' in data:
         workout.exercise_name = data ['exercise_name']
