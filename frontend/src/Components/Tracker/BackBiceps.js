@@ -1,108 +1,146 @@
-import React, { useState } from "react";
-import ExerciseBox from "./ExerciseBox";
+import React, { useState, useEffect } from "react";
+import {useNavigate} from 'react-router-dom'
+//mport ExerciseBox from "./ExerciseBox";
 
 function BackBiceps() {
-  const [exerciseBoxes, setExerciseBoxes] = useState([]);
-  const exerciseList = [
-    "Bicep curl log",
-    "Bent-over row log",
-    "Pull-up log",
-    "Lat Pull-down log",
-    "EZ Bar Bicep Curls",
-    "we can add more here!!!",
-  ];
 
-  const handleAddBox = () => {
-    setExerciseBoxes([
-      ...exerciseBoxes,
-      {
-        id: exerciseBoxes.length,
-        exerciseID: "",
-        date: "",
-        weight: "",
-        sets: "",
-        reps: "",
-        logEntries: [],
+
+  const [exercise_name, setexercise_name] = useState('');
+  const [exerciseLogs, setExerciseLogs] = useState([]);
+  const [exercise, setExercise] = useState({
+    exercise_date: '',
+    exercise_name: '',
+    reps: '',
+    weight: '',
+    sets: ''
+  })
+
+  useEffect(() => {
+    console.log(exercise_name)
+    if (exercise_name) {
+      const token = localStorage.getItem('token');
+      fetch(`http://localhost:5000/exercise-logs/${exercise_name}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+        },
+        //body: JSON.stringify({ exercise_name })
+      })
+        .then(response => response.json())
+        .then(data => setExerciseLogs(data.logs))
+        .catch(error => console.error(error));
+    }
+  }, [exercise_name]);
+
+  function handleExerciseSelect(event) {
+    setexercise_name(event.target.value);
+  }
+
+  ////////////////////////////////////////////
+  /*const handleDelete = () => {
+    onDelete(exerciseBox.id);
+  };*/
+  const navigate = useNavigate()
+  ///////////////    USE STATE FOR  POST INPUT    ////////////////
+
+
+  ///////////// HANDLE SUBMIT FOR SIGN UP /////////////////////
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token')
+    console.log(exercise)
+    navigate('/');
+
+
+    const response = await fetch('http://localhost:5000/newworkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': `Bearer ${token}`
       },
-    ]);
-  };
-
-  const handleDeleteBox = (boxId) => {
-    setExerciseBoxes(exerciseBoxes.filter((box) => box.id !== boxId));
-  };
-
-  const handleSaveBox = (index, updatedBox) => {
-    setExerciseBoxes((prevBoxes) => {
-      const updatedBoxes = [...prevBoxes];
-      updatedBoxes[index] = updatedBox;
-      return updatedBoxes;
+      body: JSON.stringify(exercise)
     });
-  };
 
-  const handleSaveAllBoxes = (exerciseID, boxId) => {
-    const boxToUpdate = exerciseBoxes.find((box) => box.id === boxId);
+    console.log(response)
+    return response.json
 
-    const newLogEntry = {
-      date: boxToUpdate.date,
-      weight: boxToUpdate.weight,
-      sets: boxToUpdate.sets,
-      reps: boxToUpdate.reps,
-      exerciseID: boxToUpdate.exerciseID,
-    };
+  }
 
-    boxToUpdate.logEntries.push(newLogEntry);
 
-    setExerciseBoxes((prevBoxes) =>
-      prevBoxes.map((box) => (box.id === boxId ? boxToUpdate : box))
-    );
-  };
+
+
+
+
+
+
+
+
 
   return (
-    <div className="backBiceps">
-      <h3>Back and Biceps</h3>
-      <button onClick={handleAddBox}>Add Exercise</button>
-      {exerciseBoxes.map((box) => (
-        <div key={box.id}>
-          <ExerciseBox
-            exerciseBox={box}
-            onSave={(updatedBox) =>
-              handleSaveBox(
-                exerciseBoxes.findIndex((b) => b.id === box.id),
-                updatedBox
-              )
-            }
-            onDelete={handleDeleteBox}
-            onSaveLog={() => handleSaveAllBoxes(box.name, box.id)}
-          />
-          <div className="log">
-            <h4>View Previous MAX-OUT Records Set</h4>
-            <div className="logScroll">
-              <select>
-                <option value="bicepCurlLog">Bicep Curl Log</option>
-                <option value="bentOverRowLog">Bent-over Row Log</option>
-                <option value="pullUpLog">Pull-up Log</option>
-                <option value="latPullDownLog">Lat Pull-down Log</option>
-                <option value="ezBarBicepCurlsLog">EZ Bar Bicep Curls Log</option>
-                <option value="we can add more here!!!">we can add more here!!!</option>
-              </select>
-            </div>
-            {box.logEntries.length === 0 ? (
-              <p>No entries in log.</p>
-            ) : (
-              <ul>
-                {box.logEntries.map((entry, index) => (
-                  <li key={index}>
-                    <span>{entry.date.toLocaleString()}</span>
-                    <span> - {entry.sets}x{entry.reps} {entry.exerciseID}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      ))}
+
+    <><div className="exerciseBox">
+      <label>
+        Name:
+        <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
+          <option value="bicepCurl">Bicep curl</option>
+          <option value="bentOverRow">Bent-over row</option>
+          <option value="pullUp">Pull-up</option>
+          <option value="latPullDown">Lat Pull-down</option>
+          <option value="ezBarBicepCurls">EZ Bar Bicep Curls</option>
+        </select>
+      </label>
+      <label>
+        Date:
+        <input type="date" value={exercise.exercise_date} onChange={e => setExercise({ ...exercise, exercise_date: e.target.value })} />
+      </label>
+      <label>
+        Weight:
+        <input type="text" value={exercise.weight} onChange={e => setExercise({ ...exercise, weight: e.target.value })} />
+      </label>
+      <label>
+        sets:
+        <input type="text" value={exercise.sets} onChange={e => setExercise({ ...exercise, sets: e.target.value })} />
+      </label>
+      <label>
+        Reps:
+        <input type="text" value={exercise.reps} onChange={e => setExercise({ ...exercise, reps: e.target.value })} />
+      </label>
+      <button onClick={handleSubmit}>Save</button>
+
     </div>
-  );
+    
+      <div className="log">
+        <h4>View Previous MAX-OUT Records Set</h4>
+        <div className="logScroll">
+          <select value={exercise_name} onChange={handleExerciseSelect}>
+            <option value="bicepCurl">Bicep Curl Log</option>
+            <option value="bentOverRow">Bent-over Row Log</option>
+            <option value="pullUp">Pull-up Log</option>
+            <option value="latPullDown">Lat Pull-down Log</option>
+            <option value="ezBarBicepCurls">EZ Bar Bicep Curls Log</option>
+          </select>
+        </div>
+        {exercise_name.length > 0 && exerciseLogs.length > 0 && (
+          <div>
+            <h2>{exercise_name}</h2>
+            <ul>
+              {exerciseLogs.map(log => (
+                <li key={log.exercise_date}>
+                  Date:{log.exercise_date} Reps: {log.reps}, Weight: {log.weight}, Sets: {log.sets}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div></>
+    /* </div>)*/
+  )
 }
+/* </div>*/
+
+
+
 
 export default BackBiceps;

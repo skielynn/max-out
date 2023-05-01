@@ -84,16 +84,18 @@ const handleSubmit = async (e) => {
                                   
                }
 
+                            
+
   return (
     <div className="exerciseBox">
       <label>
         Name:
-        <select value={exerciseID}>
-          <option value="Bicep curl">Bicep curl</option>
-          <option value="Bent-over row">Bent-over row</option>
-          <option value="Pull-up">Pull-up</option>
-          <option value="Lat Pull-down">Lat Pull-down</option>
-          <option value="EZ Bar Bicep Curls">EZ Bar Bicep Curls</option>
+        <select value={exercise.exercise_name} onChange = {e=> setExercise({...exercise, exercise_name: e.target.value})}>
+          <option value="bicepCurl">Bicep curl</option>
+          <option value="bentOverRow">Bent-over row</option>
+          <option value="pullUp">Pull-up</option>
+          <option value="latPullDown">Lat Pull-down</option>
+          <option value="ezBarBicepCurls">EZ Bar Bicep Curls</option>
         </select>
       </label>
       <label>
