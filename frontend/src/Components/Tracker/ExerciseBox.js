@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
+import {useNavigate} from 'react-router-dom'
 
 function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
-  const [name, setName] = useState(exerciseBox.name);
+  /*const [name, setName] = useState(exerciseBox.name);
   const [date, setDate] = useState(exerciseBox.date);
   const [weight, setWeight] = useState(exerciseBox.weight);
   const [sets, setSets] = useState(exerciseBox.sets);
-  const [reps, setReps] = useState(exerciseBox.reps);
+  const [reps, setReps] = useState(exerciseBox.reps);*/
   const [logAdded, setLogAdded] = useState(false);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
     }
   }, [logAdded, onSaveLog]);
 
-  const handleNameChange = (event) => {
+  /*const handleNameChange = (event) => {
     setName(event.target.value);
   };
 
@@ -33,9 +34,9 @@ function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
 
   const handleRepsChange = (event) => {
     setReps(event.target.value);
-  };
+  };*/
 
-  const handleSave = () => {
+  /*const handleSave = () => {
     onSave({
       ...exerciseBox,
       name,
@@ -45,38 +46,71 @@ function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
       reps,
     });
     setLogAdded(true);
-  };
+  };*/
 
   const handleDelete = () => {
     onDelete(exerciseBox.id);
   };
+  const navigate = useNavigate()
+                                ///////////////    USE STATE FOR SIGN UP    ////////////////
+const [exercise, setExercise] = useState({
+       exercise_date: '',
+       exercise_name: '',
+       reps: '',
+       weight: '',
+       sets:''
+       })
+                              
+                                                            ///////////// HANDLE SUBMIT FOR SIGN UP /////////////////////
+const handleSubmit = async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('token')
+      console.log(exercise)
+      navigate('/');
+
+      
+      const response = await fetch('http://localhost:5000/newworkout', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(exercise)
+              });
+                                 
+              console.log(response)
+              return response.json
+                                  
+               }
 
   return (
     <div className="exerciseBox">
       <label>
         Name:
-        <input type="text" value={name} onChange={handleNameChange} />
+        <input type="text" value={exercise.exercise_name} onChange= {e=> setExercise({...exercise, exercise_name: e.target.value})} />
       </label>
       <label>
         Date:
-        <input type="date" value={date} onChange={handleDateChange} />
+        <input type="date" value={exercise.exercise_date} onChange = {e=> setExercise({...exercise, exercise_date: e.target.value})} />
       </label>
       <label>
         Weight:
-        <input type="text" value={weight} onChange={handleWeightChange} />
+        <input type="text" value={exercise.weight} onChange = {e=> setExercise({...exercise, weight: e.target.value})} />
       </label>
       <label>
-        Sets:
-        <input type="text" value={sets} onChange={handleSetsChange} />
+        sets:
+        <input type="text" value={exercise.sets} onChange = {e=> setExercise({...exercise, sets: e.target.value})}  />
       </label>
       <label>
         Reps:
-        <input type="text" value={reps} onChange={handleRepsChange} />
+        <input type="text" value={exercise.reps} onChange = {e=> setExercise({...exercise, reps: e.target.value})}  />
       </label>
-      <button onClick={handleSave}>Save</button>
+      <button onClick={handleSubmit}>Save</button>
       <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }
+
 
 export default ExerciseBox;

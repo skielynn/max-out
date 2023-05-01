@@ -141,7 +141,7 @@ def user_data(user_id):
                 'exercise_name': user_id.exercise_name,
                 'reps': user_id.reps,
                 'weight': user_id.weight,
-                'muscle_group':user_id.muscle_group}
+                'sets':user_id.sets}
         return jsonify(data)
     else:
         return jsonify({'error': 'User data not found'}), 404

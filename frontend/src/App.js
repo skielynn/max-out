@@ -21,6 +21,7 @@ import TrackerLayout from './layouts/TrackerLayout'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+ 
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Login />} />
       <Route path="tracker" element={<TrackerLayout />}>
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
 
 function App() {
   return (
+ 
     <RouterProvider router={router} />
   );
 }
