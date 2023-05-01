@@ -55,7 +55,13 @@ function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
     <div className="exerciseBox">
       <label>
         Name:
-        <input type="text" value={name} onChange={handleNameChange} />
+        <select value={name} onChange={handleNameChange}>
+          <option value="Bicep curl">Bicep curl</option>
+          <option value="Bent-over row">Bent-over row</option>
+          <option value="Pull-up">Pull-up</option>
+          <option value="Lat Pull-down">Lat Pull-down</option>
+          <option value="EZ Bar Bicep Curls">EZ Bar Bicep Curls</option>
+        </select>
       </label>
       <label>
         Date:

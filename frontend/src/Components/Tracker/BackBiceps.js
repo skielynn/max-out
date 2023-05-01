@@ -14,7 +14,7 @@ function BackBiceps() {
         weight: "",
         sets: "",
         reps: "",
-        logEntries: [] // Add an empty array to hold log entries for each box
+        logEntries: [] 
       },
     ]);
   };
@@ -31,11 +31,9 @@ function BackBiceps() {
     });
   };
 
-  const handleSaveAllBoxes = (name, boxId) => { // Pass boxId to identify the specific box
-    // Get the box object for the specified boxId
+  const handleSaveAllBoxes = (name, boxId) => { 
     const boxToUpdate = exerciseBoxes.find((box) => box.id === boxId);
 
-    // Create a new log entry for the box
     const newLogEntry = {
       date: boxToUpdate.date,
       weight: boxToUpdate.weight,
@@ -66,15 +64,15 @@ function BackBiceps() {
               )
             }
             onDelete={handleDeleteBox}
-            onSaveLog={() => handleSaveAllBoxes(box.name, box.id)} // Pass the boxId to the handler function
+            onSaveLog={() => handleSaveAllBoxes(box.name, box.id)} 
           />
           <div className="log">
             <h4>Log</h4>
-            {box.logEntries.length === 0 ? ( // Show "No entries in log." message only for the specific box
+            {box.logEntries.length === 0 ? ( 
               <p>No entries in log.</p>
             ) : (
               <ul>
-                {box.logEntries.map((entry, index) => ( // Iterate over logEntries array for the specific box
+                {box.logEntries.map((entry, index) => ( 
                   <li key={index}>
                     <span>{entry.date.toLocaleString()}</span>
                     <span> - {entry.sets}x{entry.reps} {entry.name}</span>
