@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session, current_app
+from flask import Flask, request, jsonify, sessions, current_app
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -59,7 +59,7 @@ def signup():
     user_name = data['user_name']
 
     #create a new session 
-    session = db.sesion 
+    session = db.session 
     existing_email = session.query(User).filter_by(email=email).first()
     #existing_email = User.query.filter_by(email=email).first()
     if existing_email:
