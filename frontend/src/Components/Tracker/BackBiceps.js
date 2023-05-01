@@ -50,7 +50,7 @@ function BackBiceps() {
     e.preventDefault();
     const token = localStorage.getItem('token')
     console.log(exercise)
-    navigate('/');
+    navigate('');
 
 
     const response = await fetch('http://localhost:5000/newworkout', {
@@ -60,9 +60,9 @@ function BackBiceps() {
         'Access-Control-Allow-Origin': '*',
         'Authorization': `Bearer ${token}`
       },
+      
       body: JSON.stringify(exercise)
     });
-
     console.log(response)
     return response.json
 
