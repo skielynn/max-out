@@ -84,11 +84,11 @@ function BackBiceps() {
       <label>
         Name:
         <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
-          <option value="bicepCurl">Bicep curl</option>
-          <option value="bentOverRow">Bent-over row</option>
-          <option value="pullUp">Pull-up</option>
-          <option value="latPullDown">Lat Pull-down</option>
-          <option value="ezBarBicepCurls">EZ Bar Bicep Curls</option>
+        <option value="bicepCurl">Bicep-Curl</option>
+          <option value="bentOverRow">Bent-Over-Row</option>
+          <option value="pullUp">Pull-Up</option>
+          <option value="latPullDown">Lat-Pull-Down</option>
+          <option value="ezBarBicepCurls">EZ-Bar-Bicep-Curls</option>
         </select>
       </label>
       <label>
@@ -115,11 +115,11 @@ function BackBiceps() {
         <h4>View Previous MAX-OUT Records Set</h4>
         <div className="logScroll">
           <select value={exercise_name} onChange={handleExerciseSelect}>
-            <option value="bicepCurl">Bicep Curl Log</option>
-            <option value="bentOverRow">Bent-over Row Log</option>
-            <option value="pullUp">Pull-up Log</option>
-            <option value="latPullDown">Lat Pull-down Log</option>
-            <option value="ezBarBicepCurls">EZ Bar Bicep Curls Log</option>
+          <option value="bicepCurl">Bicep-Curl</option>
+            <option value="bentOverRow">Bent-Over-Row</option>
+            <option value="pullUp">Pull-up</option>
+            <option value="latPullDown">Lat-Pull-Down</option>
+            <option value="ezBarBicepCurls">EZ-Bar-Bicep-Curls</option>
           </select>
         </div>
         {exercise_name.length > 0 && exerciseLogs.length > 0 && (
