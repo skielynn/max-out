@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify, session
-#from flask_session  import session 
+from flask import Flask, request, jsonify, session, current_app
 from supabase import create_client  
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -58,7 +57,11 @@ def signup():
     email = data['email']
     password = data['password']
     user_name = data['user_name']
-    existing_email = User.query.filter_by(email=email).first()
+
+    #create a new session 
+    session = db.sesion 
+    existing_email = session.query(User).filter_by(email=email).first()
+    #existing_email = User.query.filter_by(email=email).first()
     if existing_email:
         return jsonify({'message': 'email already taken'}), 409
     if not user_name or not password or not email:
@@ -90,7 +93,8 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    user = User.query.filter_by(email=email).first()
+    session = db.session
+    user = session.query(User).filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password, password): 
         return jsonify({'message': 'Invalid email or password'}), 401
@@ -133,18 +137,27 @@ def newworkout():
     
 
                                 ##################    #GET ROUTE   ###################
-@app.route('/userdata/<user_id>', methods=['GET'])
-def user_data(user_id):
-    user_id = Workout.query.filter_by(user_id= user_id).first()
-    if user_id is not None:
-        data = {'exercise_date': user_id.exercise_date,
-                'exercise_name': user_id.exercise_name,
-                'reps': user_id.reps,
-                'weight': user_id.weight,
-                'sets':user_id.sets}
-        return jsonify(data)
-    else:
-        return jsonify({'error': 'User data not found'}), 404
+
+@app.route('/exercise-logs/<exercise_name>', methods=['GET'])
+@jwt_required()
+def get_exercise_logs(exercise_name):
+    current_user_id = get_jwt_identity()
+    session = db.session
+    user = session.query(User).get(current_user_id)
+    workouts = Workout.query.filter_by(user_id=user.id, exercise_name=exercise_name).all()
+    if not workouts:
+        return jsonify({'message': 'Exercise not found'}), 404
+    exercise_logs = {
+        'exercise_name': exercise_name,
+            'logs': [{
+            'reps': workout.reps,
+            'weight': workout.weight,
+            'exercise_date': workout.exercise_date,
+            'sets': workout.sets
+        } for workout in workouts]
+    }
+    return jsonify(exercise_logs)
+
 
 
                         ###################    DELETE ROUTES FOR ENTRIES    ############
