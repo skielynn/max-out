@@ -3,6 +3,14 @@ import ExerciseBox from "./ExerciseBox";
 
 function BackBiceps() {
   const [exerciseBoxes, setExerciseBoxes] = useState([]);
+  const exerciseList = [
+    "Bicep curl log",
+    "Bent-over row log",
+    "Pull-up log",
+    "Lat Pull-down log",
+    "EZ Bar Bicep Curls",
+    "we can add more here!!!",
+  ];
 
   const handleAddBox = () => {
     setExerciseBoxes([
@@ -14,7 +22,7 @@ function BackBiceps() {
         weight: "",
         sets: "",
         reps: "",
-        logEntries: [] 
+        logEntries: [],
       },
     ]);
   };
@@ -31,7 +39,7 @@ function BackBiceps() {
     });
   };
 
-  const handleSaveAllBoxes = (exerciseID, boxId) => { 
+  const handleSaveAllBoxes = (exerciseID, boxId) => {
     const boxToUpdate = exerciseBoxes.find((box) => box.id === boxId);
 
     const newLogEntry = {
@@ -64,15 +72,25 @@ function BackBiceps() {
               )
             }
             onDelete={handleDeleteBox}
-            onSaveLog={() => handleSaveAllBoxes(box.name, box.id)} 
+            onSaveLog={() => handleSaveAllBoxes(box.name, box.id)}
           />
           <div className="log">
-            <h4>Log</h4>
-            {box.logEntries.length === 0 ? ( 
+            <h4>View Previous MAX-OUT Records Set</h4>
+            <div className="logScroll">
+              <select>
+                <option value="bicepCurlLog">Bicep Curl Log</option>
+                <option value="bentOverRowLog">Bent-over Row Log</option>
+                <option value="pullUpLog">Pull-up Log</option>
+                <option value="latPullDownLog">Lat Pull-down Log</option>
+                <option value="ezBarBicepCurlsLog">EZ Bar Bicep Curls Log</option>
+                <option value="we can add more here!!!">we can add more here!!!</option>
+              </select>
+            </div>
+            {box.logEntries.length === 0 ? (
               <p>No entries in log.</p>
             ) : (
               <ul>
-                {box.logEntries.map((entry, index) => ( 
+                {box.logEntries.map((entry, index) => (
                   <li key={index}>
                     <span>{entry.date.toLocaleString()}</span>
                     <span> - {entry.sets}x{entry.reps} {entry.exerciseID}</span>
