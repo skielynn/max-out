@@ -9,7 +9,7 @@ function BackBiceps() {
       ...exerciseBoxes,
       {
         id: exerciseBoxes.length,
-        name: "",
+        exerciseID: "",
         date: "",
         weight: "",
         sets: "",
@@ -31,7 +31,7 @@ function BackBiceps() {
     });
   };
 
-  const handleSaveAllBoxes = (name, boxId) => { 
+  const handleSaveAllBoxes = (exerciseID, boxId) => { 
     const boxToUpdate = exerciseBoxes.find((box) => box.id === boxId);
 
     const newLogEntry = {
@@ -39,7 +39,7 @@ function BackBiceps() {
       weight: boxToUpdate.weight,
       sets: boxToUpdate.sets,
       reps: boxToUpdate.reps,
-      name: boxToUpdate.name,
+      exerciseID: boxToUpdate.exerciseID,
     };
 
     boxToUpdate.logEntries.push(newLogEntry);
@@ -75,7 +75,7 @@ function BackBiceps() {
                 {box.logEntries.map((entry, index) => ( 
                   <li key={index}>
                     <span>{entry.date.toLocaleString()}</span>
-                    <span> - {entry.sets}x{entry.reps} {entry.name}</span>
+                    <span> - {entry.sets}x{entry.reps} {entry.exerciseID}</span>
                   </li>
                 ))}
               </ul>

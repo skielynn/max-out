@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import {useNavigate} from 'react-router-dom'
 
-function ExerciseBox({ exerciseBox, onSave, onDelete, onSaveLog }) {
+function ExerciseBox({ exerciseBox, exerciseID, onDelete, onSaveLog }) {
   /*const [name, setName] = useState(exerciseBox.name);
   const [date, setDate] = useState(exerciseBox.date);
   const [weight, setWeight] = useState(exerciseBox.weight);
@@ -88,17 +88,13 @@ const handleSubmit = async (e) => {
     <div className="exerciseBox">
       <label>
         Name:
-<<<<<<< HEAD
-        <input type="text" value={exercise.exercise_name} onChange= {e=> setExercise({...exercise, exercise_name: e.target.value})} />
-=======
-        <select value={name} onChange={handleNameChange}>
+        <select value={exerciseID}>
           <option value="Bicep curl">Bicep curl</option>
           <option value="Bent-over row">Bent-over row</option>
           <option value="Pull-up">Pull-up</option>
           <option value="Lat Pull-down">Lat Pull-down</option>
           <option value="EZ Bar Bicep Curls">EZ Bar Bicep Curls</option>
         </select>
->>>>>>> 7c803d30cfc7c07d87050e0f88d799158ad0d3e0
       </label>
       <label>
         Date:
