@@ -1,13 +1,238 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+:root {
+  --primary: #e039c7;
+  --secondary: #ffd9fe;
+  --light-primary: #f18dde;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body, html {
+  margin: 0;
+  padding: 20px;
+  height: 100%;
+  font-family: "Poppins";
+  background: linear-gradient(to bottom right, #7048e8, #a84dff, #dd4dff, #ff709b, #ff9d6c, #e039c7);
+  /*background: linear-gradient(to bottom right, var(--secondary), var(--light-primary));*/
+  background-size: cover;
+  background-attachment: fixed;
+  
+}
+p {
+  margin: 20px 0;
+  font-weight: 400;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+button {
+  border: 0;
+  padding: 12px 90px;
+  border-radius: 25px;
+  background-color: var(--light-primary);
+  cursor: pointer;
+  transition: background-color 0.4s ease-in-out, transform 0.4s ease-in-out;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  transform: scale(1);
+}
+
+button:hover,
+button:active {
+  background-color: var(--primary);
+  color: white;
+  transform: scale(1.1)translateY(-2px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar */
+
+header nav {
+  position: relative;
+  display: flex;
+  gap: 15px;
+  justify-content: end;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 0;
+  padding-bottom: 40px;
+  height: 50px;
+  align-items: center;
+}
+
+header nav h1 {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0px;
+}
+
+header nav a {
+  text-decoration: none;
+  color: white;
+  width: 150px; 
+  padding: 30px 0; 
+  border-radius: 25px;
+  font-weight: 550;
+  font-size: 20px;
+  background-color: var(--light-primary);
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  cursor: pointer;
+  transform: scale(.7);
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header nav a:hover,
+header nav a.active {
+  background-color: var(--primary);
+  color: white;
+  transform: scale(1)translateY(-2px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header img {
+  width: 200px;
+  height: 180px;
+  margin-left: auto;
+}
+
+
+/* Login Form */
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form input,
+form label span,
+form textarea {
+  display: block;
+}
+
+form input,
+form textarea {
+  margin-bottom: 30px;
+  padding: 12px;
+  border-radius: 25px;
+  border: 0;
+  width: 220px;
+  color: var(--secondary);
+  background-color: white;
+}
+
+form label span {
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: left;
+}
+
+button[type="submit"] {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Content */
+main {
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Tracker */
+
+.tracker{
+  padding: 40px;
+}
+.tracker nav {
+  display: flex;
+  gap: 1px;
+  justify-content: end;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px 0;
+}
+.tracker nav a {
+  padding: 10px 15px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 18px;
+  transition: background-color 0.1s ease-in-out, transform 0.1s ease-in-out;
+  cursor: pointer;
+  transform: scale(1);
+}
+
+.tracker nav a:hover,
+.tracker nav a.active {
+  transform: scale(1.4) translateY(2px);
+}
+
+.tracker img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 4%;
+  border: 2px solid black
+}
+
+.exerciseBox {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.exerciseName {
+  flex: 1;
+}
+
+.exerciseDetails {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  margin-left: 20px;
+}
+
+.exerciseDetail {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.exerciseDetail label {
+  margin-right: 10px;
+}
+
+.exerciseDetail input {
+  margin-right: 10px;
+}
+
+.exerciseDetail button {
+  margin-top: 10px;
 }
