@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "^5.0.1"
+  },
+  "name": "max-out",
+  "description": "MAX-OUT is a web application designed to help gym-goers of all levels keep track of their strength training progress. Whether you're just starting out or you're an experienced weightlifter, MAX-OUT provides you with a powerful tool for tracking your progress and staying motivated along the way.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
