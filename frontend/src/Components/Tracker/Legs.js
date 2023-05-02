@@ -64,6 +64,7 @@ export default function Legs() {
       <label>
         Name:
         <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
+        <option>Select an option</option>
         <option value="Squat">Squat</option>
           <option value="gluteBridge">Glute-Bridge</option>
           <option value="splitSquat">Split-Squat</option>
@@ -80,7 +81,7 @@ export default function Legs() {
         <input type="text" value={exercise.weight} onChange={e => setExercise({ ...exercise, weight: e.target.value })} />
       </label>
       <label>
-        sets:
+        Sets:
         <input type="text" value={exercise.sets} onChange={e => setExercise({ ...exercise, sets: e.target.value })} />
       </label>
       <label>
@@ -95,13 +96,14 @@ export default function Legs() {
         <h4>View Previous MAX-OUT Records Set</h4>
         <div className="logScroll">
           <select value={exercise_name} onChange={handleExerciseSelect}>
+            <option >Select a record</option>
             <option value="Squat">Squat</option>
             <option value="gluteBridge">Glute-Bridge</option>
             <option value="splitSquat">Split-Squat</option>
             <option value="kickBacks">Kickbacks</option>
             <option value="sumoDeadlifts">Sumo-Deadlifts</option>
           </select>
-          </div>
+        </div>
         {exercise_name.length > 0 && (
   <div>
     <h2>{exercise_name}</h2>

@@ -64,6 +64,7 @@ export default function ChestTriceps() {
     <label>
       Name:
       <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
+        <option>Select an option</option>
         <option value="dbFly">DB-Fly</option>
         <option value="pushUps">Push-Ups</option>
         <option value="cableCrossover">Cable-Crossover</option>
@@ -80,7 +81,7 @@ export default function ChestTriceps() {
       <input type="text" value={exercise.weight} onChange={e => setExercise({ ...exercise, weight: e.target.value })} />
     </label>
     <label>
-      sets:
+      Sets:
       <input type="text" value={exercise.sets} onChange={e => setExercise({ ...exercise, sets: e.target.value })} />
     </label>
     <label>
@@ -95,13 +96,14 @@ export default function ChestTriceps() {
       <h4>View Previous MAX-OUT Records Set</h4>
       <div className="logScroll">
         <select value={exercise_name} onChange={handleExerciseSelect}>
+          <option >Select a record</option>
           <option value="dbFly">DB-Fly</option>
           <option value="pushUps">Push-Ups</option>
           <option value="cableCrossover">Cable-Crossover</option>
           <option value="overheadExnts">Overhead-Extns</option>
           <option value="benchPress">Bench-Press</option>
         </select>
-        </div>
+      </div>
         {exercise_name.length > 0 && (
   <div>
     <h2>{exercise_name}</h2>
