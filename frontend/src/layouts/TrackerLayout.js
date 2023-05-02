@@ -6,29 +6,10 @@ import legs from './images/legs.png';
 import shoulders from './images/shoulders.png';
 
 
-/*const [user, setUser] = useState(null);
-
-useEffect(() => {
-  // check if user is logged in and fetch user data if so
-  const token = localStorage.getItem('token');
-  if (token) {
-    fetch('http://localhost:5000/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => setUser(data))
-      .catch(error => console.error(error));
-  }
-}, []);*/
 
 export default function TrackerLayout() {
 
- 
   
-
-
 
   return (
     <div className="tracker">

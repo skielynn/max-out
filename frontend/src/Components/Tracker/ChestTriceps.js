@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom'
+//import {useNavigate} from 'react-router-dom'
 
 export default function ChestTriceps() {
 
@@ -35,13 +35,13 @@ export default function ChestTriceps() {
     setexercise_name(event.target.value);
   }
 
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token')
     console.log(exercise)
-    navigate('/');
+    
 
 
     const response = await fetch('http://localhost:5000/newworkout', {

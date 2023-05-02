@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom'
+//import {useNavigate} from 'react-router-dom'
 
 export default function Shoulders() {
   const [exercise_name, setexercise_name] = useState('');
@@ -34,13 +34,13 @@ export default function Shoulders() {
     setexercise_name(event.target.value);
   }
 
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token')
     console.log(exercise)
-    navigate('/');
+    
 
 
     const response = await fetch('http://localhost:5000/newworkout', {
@@ -63,7 +63,8 @@ export default function Shoulders() {
     <label>
       Name:
       <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
-      <option value="barbellOverheadPress">Barbell-Overhead-Press</option>
+        <option >Select an option</option>
+        <option value="barbellOverheadPress">Barbell-Overhead-Press</option>
         <option value="arnoldPress">Arnold-Press</option>
         <option value="pushPress">Push-Press</option>
         <option value="inclineYRaise">Incline-Y-Raise</option>
@@ -94,7 +95,8 @@ export default function Shoulders() {
       <h4>View Previous MAX-OUT Records Set</h4>
       <div className="logScroll">
         <select value={exercise_name} onChange={handleExerciseSelect}>
-        <option value="barbellOverheadPress">Barbell-Overhead-Press</option>
+          <option >Select a record</option>
+          <option value="barbellOverheadPress">Barbell-Overhead-Press</option>
           <option value="arnoldPress">Arnold-Press</option>
           <option value="pushPress">Push-Press</option>
           <option value="inclineYRaise">Incline-Y-Raise</option>

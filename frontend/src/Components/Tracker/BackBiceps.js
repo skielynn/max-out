@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom'
+//import {useNavigate} from 'react-router-dom'
 //mport ExerciseBox from "./ExerciseBox";
 
 function BackBiceps() {
@@ -37,20 +37,12 @@ function BackBiceps() {
     setexercise_name(event.target.value);
   }
 
-  ////////////////////////////////////////////
-  /*const handleDelete = () => {
-    onDelete(exerciseBox.id);
-  };*/
-  const navigate = useNavigate()
-  ///////////////    USE STATE FOR  POST INPUT    ////////////////
 
-
-  ///////////// HANDLE SUBMIT FOR SIGN UP /////////////////////
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token')
     console.log(exercise)
-    navigate('/');
+
 
 
     const response = await fetch('http://localhost:5000/newworkout', {
@@ -68,23 +60,14 @@ function BackBiceps() {
 
   }
 
-
-
-
-
-
-
-
-
-
-
   return (
 
     <><div className="exerciseBox">
       <label>
         Name:
         <select value={exercise.exercise_name} onChange={e => setExercise({ ...exercise, exercise_name: e.target.value })}>
-        <option value="bicepCurl">Bicep-Curl</option>
+          <option >Select an option</option>
+          <option value="bicepCurl">Bicep-Curl</option>
           <option value="bentOverRow">Bent-Over-Row</option>
           <option value="pullUp">Pull-Up</option>
           <option value="latPullDown">Lat-Pull-Down</option>
@@ -110,12 +93,13 @@ function BackBiceps() {
       <button onClick={handleSubmit}>Save</button>
 
     </div>
-    
+
       <div className="log">
         <h4>View Previous MAX-OUT Records Set</h4>
         <div className="logScroll">
           <select value={exercise_name} onChange={handleExerciseSelect}>
-          <option value="bicepCurl">Bicep-Curl</option>
+            <option >Select a record</option>
+            <option value="bicepCurl">Bicep-Curl</option>
             <option value="bentOverRow">Bent-Over-Row</option>
             <option value="pullUp">Pull-up</option>
             <option value="latPullDown">Lat-Pull-Down</option>
@@ -135,10 +119,10 @@ function BackBiceps() {
           </div>
         )}
       </div></>
-    /* </div>)*/
+
   )
 }
-/* </div>*/
+
 
 
 
