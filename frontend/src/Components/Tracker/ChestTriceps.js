@@ -101,10 +101,13 @@ export default function ChestTriceps() {
           <option value="overheadExnts">Overhead-Extns</option>
           <option value="benchPress">Bench-Press</option>
         </select>
-      </div>
-      {exercise_name.length > 0 && exerciseLogs.length > 0 && (
-        <div>
-          <h2>{exercise_name}</h2>
+        </div>
+        {exercise_name.length > 0 && (
+  <div>
+    <h2>{exercise_name}</h2>
+    {(() => {
+      if (exerciseLogs && exerciseLogs.length > 0) {
+        return (
           <ul>
             {exerciseLogs.map(log => (
               <li key={log.exercise_date}>
@@ -112,10 +115,17 @@ export default function ChestTriceps() {
               </li>
             ))}
           </ul>
-        </div>
-      )}
-    </div></>
-  /* </div>)*/
-)
-}
+        );
+      } else {
+        return <p>No exercise logs available</p>;
+      }
+    })()}
+  </div>
+)}
 
+          </div>
+        </>
+    /* </div>)*/
+  )
+}
+/* </div>*/

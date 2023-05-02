@@ -122,19 +122,29 @@ function BackBiceps() {
             <option value="ezBarBicepCurls">EZ-Bar-Bicep-Curls</option>
           </select>
         </div>
-        {exercise_name.length > 0 && exerciseLogs.length > 0 && (
-          <div>
-            <h2>{exercise_name}</h2>
-            <ul>
-              {exerciseLogs.map(log => (
-                <li key={log.exercise_date}>
-                  Date:{log.exercise_date} Reps: {log.reps}, Weight: {log.weight}, Sets: {log.sets}
-                </li>
-              ))}
-            </ul>
+        {exercise_name.length > 0 && (
+  <div>
+    <h2>{exercise_name}</h2>
+    {(() => {
+      if (exerciseLogs && exerciseLogs.length > 0) {
+        return (
+          <ul>
+            {exerciseLogs.map(log => (
+              <li key={log.exercise_date}>
+                Date:{log.exercise_date} Reps: {log.reps}, Weight: {log.weight}, Sets: {log.sets}
+              </li>
+            ))}
+          </ul>
+        );
+      } else {
+        return <p>No exercise logs available</p>;
+      }
+    })()}
+  </div>
+)}
+
           </div>
-        )}
-      </div></>
+        </>
     /* </div>)*/
   )
 }
