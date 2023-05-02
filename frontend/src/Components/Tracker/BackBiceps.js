@@ -83,7 +83,7 @@ function BackBiceps() {
         <input type="text" value={exercise.weight} onChange={e => setExercise({ ...exercise, weight: e.target.value })} />
       </label>
       <label>
-        sets:
+        Sets:
         <input type="text" value={exercise.sets} onChange={e => setExercise({ ...exercise, sets: e.target.value })} />
       </label>
       <label>
